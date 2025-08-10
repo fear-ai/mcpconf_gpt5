@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mcpconf"
+version = "0.1.0"
+description = "Unified configuration and conversion for MCP server definitions"
+readme = "README.md"
+authors = [{ name = "MCP Project" }]
+requires-python = ">=3.9"
+dependencies = [
+  "PyYAML>=6.0",
+  "jsonschema>=4.23.0",
+  "pydantic>=2.7.0",
+]
+
+[project.scripts]
+mcpconf = "mcpconf.cli:main"

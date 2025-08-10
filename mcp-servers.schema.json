@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/mcp-servers.schema.json",
+  "title": "MCP Server Registry",
+  "type": "object",
+  "properties": {
+    "version": { "type": "string", "pattern": "^1\\.0$", "description": "Schema version. Start with '1.0'" },
+    "servers": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/server" },
+      "description": "List of MCP servers available to a client"
+    },
+    "inputs": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/input" },
+      "description": "Optional input prompts or variables referenced by servers (e.g., tokens)"
+    }
+  },
+  "required": ["version", "servers"],
+  "$defs": {
+    "server": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "description": "Stable identifier used as key in generated configs" },
+        "name": { "type": "string", "description": "Human-readable display name" },
+        "deployment": { "type": "string", "enum": ["local", "remote"], "description": "Local = stdio over spawned process. Remote = network transport" },
+        "transport": { "type": "string", "enum": ["stdio", "http", "sse"], "description": "Primary transport used by the server" },
+        "type": { "type": "string", "enum": ["node", "python", "rust", "binary", "http"], "description": "Runtime or packaging type (informational)" },
+        "url": { "type": "string", "format": "uri", "description": "Base URL for remote (http/sse) servers" },
+        "command": { "type": "string", "description": "Executable for local servers (e.g., node, python, npx, uv, uvx)" },
+        "args": { "type": "array", "items": { "type": "string" }, "description": "Arguments passed to command" },
+        "env": { "type": "object", "additionalProperties": { "type": "string" }, "description": "Environment variables for the process" },
+        "working_directory": { "type": "string", "description": "Optional working directory for the process" },
+        "headers": { "type": "object", "additionalProperties": { "type": "string" }, "description": "Static headers for remote servers" },
+        "auth": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "scheme": { "type": "string", "enum": ["bearer", "api_key", "basic", "none"], "default": "none" },
+            "token": { "type": "string", "description": "Inline token or placeholder (e.g., ${input:github_mcp_pat})" },
+            "header": { "type": "string", "description": "Header name used for API key/bearer (default Authorization)" },
+            "env_ref": { "type": "string", "description": "Environment variable name containing secret" },
+            "input_ref": { "type": "string", "description": "Reference to an input prompt id" },
+            "username": { "type": "string", "description": "For basic auth" },
+            "password": { "type": "string", "description": "For basic auth or placeholder" }
+          }
+        },
+        "source": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "repository": { "type": "string", "format": "uri", "description": "Source code repository URL if available" },
+            "license": { "type": "string", "description": "License identifier or text (e.g., MIT, Apache-2.0)" },
+            "available": { "type": "boolean", "description": "Whether source code is available" },
+            "vendor": { "type": "string", "description": "Vendor or maintainer name" }
+          }
+        },
+        "tags": { "type": "array", "items": { "type": "string" } },
+        "notes": { "type": "string" }
+      },
+      "required": ["id", "deployment", "transport"],
+      "allOf": [
+        {
+          "if": { "properties": { "deployment": { "const": "local" } } },
+          "then": { "required": ["command"] }
+        },
+        {
+          "if": { "properties": { "deployment": { "const": "remote" } } },
+          "then": { "required": ["url"] }
+        }
+      ]
+    },
+    "input": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": { "type": "string", "enum": ["promptString", "secret", "boolean", "number"] },
+        "id": { "type": "string" },
+        "description": { "type": "string" },
+        "password": { "type": "boolean" },
+        "default": {}
+      },
+      "required": ["type", "id"]
+    }
+  }
+}

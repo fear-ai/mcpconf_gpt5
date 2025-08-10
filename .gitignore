@@ -1,0 +1,92 @@
+# Combined .gitignore
+# Based on ~/Work/Github/mcpred/.gitignore and supplemented per request
+
+# Log files
+logs/
+*.log
+
+# Python
+.python-version
+__pycache__/
+*.py[cod]
+*$py.class
+uv.lock
+
+# NOTE: The following would ignore all Python source files.
+# It is usually NOT desired. Uncomment only if you truly intend to ignore *.py files.
+# *.py
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+
+# Testing and coverage
+.coverage
+htmlcov/
+.pytest_cache/
+.tox/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IDEs and editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS specific files
+.DS_Store
+Thumbs.db
+
+# Docker
+.dockerignore
+docker-compose.override.yml
+
+# Temporary files
+*.tmp
+*.temp
+temp/
+tmp/
+
+# Potentially large files
+*.csv
+*.xlsx
+*.json.bak
+
+# Development artifacts
+.mypy_cache/
+.bandit
+bandit_results.json
+safety_results.json
+
+# Testing artifacts
+*.mcpred
+reports/
+security_reports/
+vulnerability_scans/
+fuzz_outputs/
+stress_test_results/
+unit.out
+integration.out
+
+# MCP specific
+mcp_servers/
+server_configs/
+.mcp_cache/
+
+# Claude Code artifacts
+.claude/

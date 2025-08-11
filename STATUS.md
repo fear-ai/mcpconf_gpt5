@@ -1,24 +1,31 @@
 ### Project status
-- Branch: main
-- Commit: 674c1a81683c9f85315a9203c28aabdb1e57651a
 - Summary: chore: initial import of mcpconf implementation, schema, docs, examples, tests
-- Date: 2025-08-10 14:02:48 -0700
+- Date: 2025-08-10
+
+- GitHub setup: Steps 1–4 in `GITHUB.md` completed; further Git/GitHub tasks (PRs, protections, releases) are deprioritized for now.
 
 ### Artifacts
 - Package: `src/mcpconf` with CLI (`python3 -m mcpconf.cli`)
 - Schema: `mcp-servers.schema.json`
-- Docs: `README.md`, `SERVERS.md`, `MCPCONF.md`, `MCPCONF_DESIGN.md`, `GITHUB.md`
+- Docs: `README.md`, `SERVERS.md`, `MCPCONF.md`, `DESIGN.md`, `GITHUB.md`
 - Examples: `examples/mcp-servers.example.yaml` with generated outputs in `examples/outputs/`
 - Tests: `pytest -q` (5 tests passing)
 
-### Outstanding items
-- Add `.github/workflows/ci.yml` for automated tests on PRs.
-- Consider packaging to PyPI once stable (bump version, release notes).
-- Optional: add discovery loader (project/user/system paths, env var) to library.
-- Expand tests to cover headers merge precedence and edge cases (missing fields, invalid transport).
-
 ### Next steps
-1) Add CI workflow file and badge in `README.md`.
-2) Push to GitHub (manual or via CLI) using `GITHUB.md` instructions.
-3) Open an initial PR enabling CI and protections.
-4) Implement discovery helper and extend converters for additional client formats if needed.
+- CLI smoke tests, helpful error messages, `--output` path, and `--format` autodetect for inputs, all `--to` targets
+- Validate edge cases: missing required fields, invalid `transport`, bad URLs, unknown auth schemes.
+- Extend converters: add DXT manifest emitter; refine remote URL handling (SSE vs HTTP) where clients differ
+- Implement discovery loader in library and CLI (project/user/system locations and `MCP_SERVERS_CONFIG`)
+- Finalize discovery and precedence model (project > env var > user > system) with clear override semantics
+- Add header merge precedence and auth schemes (bearer/api_key/basic) including custom header names
+- Update docs with discovery details and examples; add security best practices
+- Round-trip loader tests (YAML/JSON)
+- Refine SSE/HTTP handling
+- Clarify auth/header merge rules and placeholders (`${input:...}`, `${env:...}`) across targets, expand tests and error cases 
+
+- Documentation:
+  - Expand `MCPCONF.md` with concrete discovery examples per OS and env var
+  - Document transport support matrix and behavior for `stdio`, `http`, `sse`
+  - Add migration/usage examples for common servers (Everything, Sentry, Cloudflare, GitHub)
+  - Add security guidance examples for `${input:...}` vs `${env:...}`
+  - Defer GitHub-specific workflows/badges until CI is reinstated

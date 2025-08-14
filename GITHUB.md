@@ -53,7 +53,7 @@ gh pr create --title "feat: <title>" --body "<summary>"
 ```
 
 ### 6) Continuous Integration (GitHub Actions)
-Create `.github/workflows/ci.yml`:
+Create `.github/workflows/ci.yaml`:
 ```yaml
 name: ci
 on:

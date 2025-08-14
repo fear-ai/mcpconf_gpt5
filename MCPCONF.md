@@ -49,7 +49,7 @@
 
 ## Data model (MCPCONF)
 
-A concise, versioned model that captures local and remote forms and maps to existing ecosystems. A full schema is provided in `mcp-servers.schema.json` and an example in `mcp-servers.example.yaml`.
+A concise, versioned model that captures local and remote forms and maps to existing ecosystems. A full schema is provided in `mcp-servers.schema.json` and an example in `examples/mcp-servers.example.yaml`.
 
 ### Top-level
 - **version**: Schema version string (e.g., `"1.0"`).
@@ -146,15 +146,15 @@ A concise, versioned model that captures local and remote forms and maps to exis
 
 ## Discovery and precedence
 - **Locations**: Clients SHOULD search in order:
-  - Project: `./.mcp/servers.{yaml,json}` or `./mcp-servers.{yaml,json}`
-  - User: `~/.config/mcp/servers.{yaml,json}` (Linux), `~/Library/Application Support/mcp/servers.{yaml,json}` (macOS), `%APPDATA%\mcp\servers.{yaml,json}` (Windows)
-  - System: `/etc/mcp/servers.{yaml,json}` (Linux), machine-wide equivalents on other OSes
+  - Project: `./mcp-servers.{yaml,json}` or `./mcpservers.{yaml,json}`
+  - User: `~/.config/mcp/mcp-servers.{yaml,json}` (Linux), `~/Library/Application Support/mcp/mcp-servers.{yaml,json}` (macOS), `%APPDATA%\mcp\mcp-servers.{yaml,json}` (Windows)
+  - System: `/etc/mcp/mcp-servers.{yaml,json}` (Linux), machine-wide equivalents on other OSes
 - **Environment override**: `MCP_SERVERS_CONFIG` path wins.
 - **Precedence**: Project > Env var > User > System. Later layers override by `id`.
 
 ## Validation and tooling
 - **Schema**: See `mcp-servers.schema.json` (JSON Schema, Draft 2020-12).
-- **Example**: See `mcp-servers.example.yaml` covering local, remote, auth, inputs, metadata.
+- **Example**: See `examples/mcp-servers.example.yaml` covering local, remote, auth, inputs, metadata.
 - **Converters**: `convert_mcp_config.py` generates:
   - Claude Desktop/CLI `mcpServers` JSON
   - GitHub http-only `servers` JSON

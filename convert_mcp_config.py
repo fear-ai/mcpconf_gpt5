@@ -14,7 +14,7 @@ except Exception:
 def load_config(path: str) -> Dict[str, Any]:
     with open(path, "r", encoding="utf-8") as f:
         text = f.read()
-    if path.endswith(".yaml") or path.endswith(".yml"):
+    if path.endswith(".yaml"):
         if yaml is None:
             print("PyYAML not installed. Run: pip install -r requirements.txt", file=sys.stderr)
             sys.exit(2)
